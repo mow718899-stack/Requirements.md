@@ -1,0 +1,41 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateListing",
+  "name": "آپارتمان ۱۲۰ متری در سعادت‌آباد",
+  "description": "آپارتمان نوساز ۱۲۰ متری، ۲ خوابه، طبقه ۵، با پارکینگ و انباری",
+  "url": "https://example.com/property/123",
+  "datePosted": "2025-01-15",
+  "image": [
+    "https://example.com/images/property1.jpg",
+    "https://example.com/images/property2.jpg"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "8500000000",
+    "priceCurrency": "IRR",
+    "availability": "https://schema.org/InStock",
+    "validFrom": "2025-01-15"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "بلوار سعادت‌آباد، کوچه بهار، پلاک ۱۰",
+    "addressLocality": "تهران",
+    "addressRegion": "تهران",
+    "addressCountry": "IR"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 35.7800,
+    "longitude": 51.3700
+  },
+  "floorSize": {
+    "@type": "QuantitativeValue",
+    "value": 120,
+    "unitCode": "MTK"
+  },
+  "numberOfRooms": 2,
+  "numberOfBathroomsTotal": 1,
+  "yearBuilt": 2023
+}
+</script>
