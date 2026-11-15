@@ -1,0 +1,192 @@
+┌───────────────────────────────────┐
+│              User                 │
+├───────────────────────────────────┤
+│ - id: int                         │
+│ - fullName: string                │
+│ - phone: string                   │
+│ - email: string                   │
+│ - password: string                │
+│ - role: enum{user,agent,admin}    │
+│ - createdAt: datetime             │
+├───────────────────────────────────┤
+│ + login(): bool                   │
+│ + register(): bool                │
+│ + logout(): void                  │
+│ + updateProfile(): void           │
+└──────────────┬────────────────────┘
+               │
+       ┌───────┴────────┐
+       │  Inheritance   │
+       ▼                ▼
+┌──────────────────┐   ┌──────────────────┐
+│     Customer     │   │      Agent       │
+├──────────────────┤   ├──────────────────┤
+│ - savedSearches  │   │ - licenseNo      │
+│ - favorites[]    │   │ - agencyName     │
+├──────────────────┤   │ - rating         │
+│ + addFavorite()  │   │ - bio            │
+│ + saveSearch()   │   ├──────────────────┤
+│ + requestVisit() │   │ + publishProp()  │
+└────────┬─────────┘   │ + manageProps()  │
+         │             │ + replyRequest() │
+         │             └────────┬─────────┘
+         │                      │
+         │                      │ 1
+         │                      │
+         │                      ▼ *
+         │             ┌────────────────────┐
+         │             │     Property       │
+         │             ├────────────────────┤
+         │             │ - id: int          │
+         │             │ - title: string    │
+         │             │ - description: text│
+         │             │ - type: enum       │
+         │             │ - dealType: enum   │
+         │             │ - price: bigint    │
+         │             │ - area: float      │
+         │             │ - rooms: int       │
+         │             │ - bathrooms: int   │
+         │             │ - floor: int       │
+         │             │ - yearBuilt: int   │
+         │             │ - address: string  │
+         │             │ - lat: float       │
+         │             │ - lng: float       │
+         │             │ - status: enum     │
+         │             │ - agentId: int     │
+         │             │ - createdAt: dt    │
+         │             ├────────────────────┤
+         │             │ + create()         │
+         │             │ + update()         │
+         │             │ + delete()         │
+         │             │ + approve()        │
+         │             │ + reject(reason)   │
+         │             │ + getImages()      │
+         │             └─────────┬──────────┘
+         │                       │
+         │                       │ 1
+         │                       │
+         │                       ▼ *
+         │             ┌────────────────────┐
+         │             │   PropertyImage    │
+         │             ├────────────────────┤
+         │             │ - id: int          │
+         │             │ - url: string      │
+         │             │ - isMain: bool     │
+         │             │ - propertyId: int  │
+         │             ├────────────────────┤
+         │             │ + upload()         │
+         │             │ + setMain()        │
+         │             │ + remove()         │
+         │             └────────────────────┘
+         │
+         │ *
+         │
+         ▼
+┌───────────────────────────────────┐
+│         VisitRequest              │
+├───────────────────────────────────┤
+│ - id: int                         │
+│ - customerId: int                 │
+│ - propertyId: int                 │
+│ - visitDate: datetime             │
+│ - phone: string                   │
+│ - note: text                      │
+│ - status: enum{pending,approved,  │
+│           rejected,done}          │
+│ - createdAt: datetime             │
+├───────────────────────────────────┤
+│ + create()                        │
+│ + approve()                       │
+│ + reject()                        │
+│ + cancel()                        │
+└──────────────┬────────────────────┘
+               │
+               │ *
+               │
+               ▼
+┌───────────────────────────────────┐
+│            Review                 │
+├───────────────────────────────────┤
+│ - id: int                         │
+│ - customerId: int                 │
+│ - agentId: int                    │
+│ - rating: int (1..5)              │
+│ - comment: text                   │
+│ - createdAt: datetime             │
+├───────────────────────────────────┤
+│ + add()                           │
+│ + edit()                          │
+│ + delete()                        │
+└───────────────────────────────────┘
+
+┌───────────────────────────────────┐
+│          Subscription             │
+├───────────────────────────────────┤
+│ - id: int                         │
+│ - agentId: int                    │
+│ - plan: enum{basic,silver,gold}   │
+│ - startDate: date                 │
+│ - endDate: date                   │
+│ - price: bigint                   │
+│ - isActive: bool                  │
+├───────────────────────────────────┤
+│ + activate()                      │
+│ + renew()                         │
+│ + expire()                        │
+└───────────────────────────────────┘
+
+┌───────────────────────────────────┐
+│            Payment                │
+├───────────────────────────────────┤
+│ - id: int                         │
+│ - subscriptionId: int             │
+│ - amount: bigint                  │
+│ - gateway: string                 │
+│ - refId: string                   │
+│ - status: enum{success,failed}    │
+│ - paidAt: datetime                │
+├───────────────────────────────────┤
+│ + verify()                        │
+│ + refund()                        │
+└───────────────────────────────────┘
+
+┌───────────────────────────────────┐
+│          Neighborhood             │
+├───────────────────────────────────┤
+│ - id: int                         │
+│ - name: string                    │
+│ - cityId: int                     │
+│ - avgPricePerMeter: bigint        │
+├───────────────────────────────────┤
+│ + getStats()                      │
+└───────────────────────────────────┘
+
+┌───────────────────────────────────┐
+│              City                 │
+├───────────────────────────────────┤
+│ - id: int                         │
+│ - name: string                    │
+│ - provinceId: int                 │
+├───────────────────────────────────┤
+│ + getNeighborhoods()              │
+└───────────────────────────────────┘
+
+
+
+
+
+
+۲. جدول روابط بین کلاس‌ها
+کلاس مبدأ	نوع رابطه	کلاس مقصد	توضیح
+User	وراثت (Inheritance)	Customer	خریدار/مستأجر یک نوع کاربر است
+User	وراثت (Inheritance)	Agent	مشاور یک نوع کاربر است
+Agent	یک‌به‌چند (1..*)	Property	هر مشاور چند ملک ثبت می‌کند
+Property	یک‌به‌چند (1..*)	PropertyImage	هر ملک چند تصویر دارد
+Customer	یک‌به‌چند (1..*)	VisitRequest	هر خریدار چند درخواست بازدید دارد
+Property	یک‌به‌چند (1..*)	VisitRequest	هر ملک چند درخواست بازدید دارد
+Customer	یک‌به‌چند (1..*)	Review	هر خریدار چند نظر ثبت می‌کند
+Agent	یک‌به‌چند (1..*)	Review	هر مشاور چند امتیاز دریافت می‌کند
+Agent	یک‌به‌چند (1..*)	Subscription	هر مشاور چند اشتراک می‌خرد
+Subscription	یک‌به‌چند (1..*)	Payment	هر اشتراک چند پرداخت دارد
+City	یک‌به‌چند (1..*)	Neighborhood	هر شهر چند محله دارد
+Neighborhood	یک‌به‌چند (1..*)	Property	هر محله چند ملک دارد
