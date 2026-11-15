@@ -1,0 +1,148 @@
+classDiagram
+    class User {
+        -int id
+        -string fullName
+        -string phone
+        -string email
+        -string password
+        -enum role
+        -datetime createdAt
+        +login() bool
+        +register() bool
+        +logout() void
+        +updateProfile() void
+    }
+
+    class Customer {
+        -array savedSearches
+        -array favorites
+        +addFavorite() void
+        +saveSearch() void
+        +requestVisit() void
+    }
+
+    class Agent {
+        -string licenseNo
+        -string agencyName
+        -float rating
+        -string bio
+        +publishProperty() void
+        +manageProperties() void
+        +replyRequest() void
+    }
+
+    class Property {
+        -int id
+        -string title
+        -text description
+        -enum type
+        -enum dealType
+        -bigint price
+        -float area
+        -int rooms
+        -int bathrooms
+        -int floor
+        -int yearBuilt
+        -string address
+        -float lat
+        -float lng
+        -enum status
+        -int agentId
+        -datetime createdAt
+        +create() void
+        +update() void
+        +delete() void
+        +approve() void
+        +reject(reason) void
+        +getImages() list
+    }
+
+    class PropertyImage {
+        -int id
+        -string url
+        -bool isMain
+        -int propertyId
+        +upload() void
+        +setMain() void
+        +remove() void
+    }
+
+    class VisitRequest {
+        -int id
+        -int customerId
+        -int propertyId
+        -datetime visitDate
+        -string phone
+        -text note
+        -enum status
+        -datetime createdAt
+        +create() void
+        +approve() void
+        +reject() void
+        +cancel() void
+    }
+
+    class Review {
+        -int id
+        -int customerId
+        -int agentId
+        -int rating
+        -text comment
+        -datetime createdAt
+        +add() void
+        +edit() void
+        +delete() void
+    }
+
+    class Subscription {
+        -int id
+        -int agentId
+        -enum plan
+        -date startDate
+        -date endDate
+        -bigint price
+        -bool isActive
+        +activate() void
+        +renew() void
+        +expire() void
+    }
+
+    class Payment {
+        -int id
+        -int subscriptionId
+        -bigint amount
+        -string gateway
+        -string refId
+        -enum status
+        -datetime paidAt
+        +verify() bool
+        +refund() void
+    }
+
+    class City {
+        -int id
+        -string name
+        -int provinceId
+        +getNeighborhoods() list
+    }
+
+    class Neighborhood {
+        -int id
+        -string name
+        -int cityId
+        -bigint avgPricePerMeter
+        +getStats() object
+    }
+
+    User <|-- Customer
+    User <|-- Agent
+    Agent "1" --> "*" Property : ثبت می‌کند
+    Property "1" --> "*" PropertyImage : دارد
+    Customer "1" --> "*" VisitRequest : درخواست می‌دهد
+    Property "1" --> "*" VisitRequest : دریافت می‌کند
+    Customer "1" --> "*" Review : می‌نویسد
+    Agent "1" --> "*" Review : دریافت می‌کند
+    Agent "1" --> "*" Subscription : خریداری می‌کند
+    Subscription "1" --> "*" Payment : دارد
+    City "1" --> "*" Neighborhood : شامل
+    Neighborhood "1" --> "*" Property : شامل
